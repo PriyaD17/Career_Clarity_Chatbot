@@ -8,7 +8,7 @@ export default function Home() {
       <InitialMessage />
       <RadialPatternWithRadar />
       <Link href="/chat">
-      <ShinyButton text="Get Started ✨" />
+      <ShinyButton text="Get Started ✨ " />
       </Link>
     </div>
   );
