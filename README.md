@@ -18,7 +18,7 @@ C3 is an AI-powered career guidance chatbot for Indian students after 10th and 1
 
 ## 🌐 Live Demo
 
-[https://your-c3-site.vercel.app](https://your-c3-site.vercel.app)
+[https://career-clarity-chatbot.vercel.app/](https://career-clarity-chatbot.vercel.app/)
 
 ---
 
