@@ -57,7 +57,7 @@ export default function Home() {
           path, courses, and exams in India.
         </motion.p>
         
-        {/* Call to Action Button */}
+    
         <motion.div variants={itemVariants}>
           <Link href="/chat">
             <ShinyButton text="Get Started ✨" />
@@ -65,7 +65,7 @@ export default function Home() {
         </motion.div>
       </motion.div>
 
-      {/* The radar animation now sits visually behind the text */}
+
       <RadialPatternWithRadar />
 
     </main>
