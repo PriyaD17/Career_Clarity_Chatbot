@@ -44,7 +44,7 @@ export function Chat() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4">
-      <Card className="w-full max-w-4xl h-[90vh] grid grid-rows-[auto,6fr,auto] bg-zinc-900 border-zinc-700 shadow-2xl shadow-orange-500/10">
+      <Card className="w-full max-w-4xl h-[90vh] flex flex-col bg-zinc-900 border-zinc-700 shadow-2xl shadow-orange-500/10">
         <CardHeader className="border-b border-zinc-700">
           <div className="flex items-center justify-center gap-3">
             <div className="p-2 bg-orange-500/10 rounded-full">

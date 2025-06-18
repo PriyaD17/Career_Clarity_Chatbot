@@ -5,7 +5,7 @@ export const runtime = 'edge';
 
 const google = createGoogleGenerativeAI({
   
-  apiKey: process.env.GOOGLE_API_KEY,
+  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 });
 
 const systemPrompt = `You are C3, an expert AI career counselor for Indian students who have completed 10th or 12th grade. Your name stands for Career Clarity Chatbot.
