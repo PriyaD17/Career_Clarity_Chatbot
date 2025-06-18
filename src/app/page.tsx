@@ -58,6 +58,9 @@ export default function Home() {
         </motion.p>
         
     
+        <RadialPatternWithRadar />
+
+        
         <motion.div variants={itemVariants}>
           <Link href="/chat">
             <ShinyButton text="Get Started ✨" />
@@ -66,7 +69,7 @@ export default function Home() {
       </motion.div>
 
 
-      <RadialPatternWithRadar />
+      
 
     </main>
   );

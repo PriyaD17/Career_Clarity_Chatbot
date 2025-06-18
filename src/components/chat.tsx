@@ -1,6 +1,6 @@
 "use client";
 
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import {
   Card,
   CardContent,
@@ -13,15 +13,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { SendHorizonal, Bot, User, BrainCircuit } from "lucide-react";
+import { SendHorizonal, Bot, User, BrainCircuit, Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useEffect, useRef } from "react";
-// import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export function Chat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
-      // The API route we created earlier
       api: "/api/chat",
     });
 
@@ -38,52 +37,57 @@ export function Chat() {
   }, [messages]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black">
-      <Card className="w-[95%] max-w-2xl h-[90vh] grid grid-rows-[auto,1fr,auto] bg-background border-border shadow-2xl shadow-orange-400/10">
-        <CardHeader className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-                <BrainCircuit className="w-8 h-8 text-orange-400"/>
-                <CardTitle className="text-2xl font-bold text-white">
-                    Career Clarity Chatbot
-                </CardTitle>
+    <div className="flex min-h-screen items-center justify-center bg-black p-4">
+      <Card className="w-full max-w-4xl h-[90vh] grid grid-rows-[auto,1fr,auto] bg-zinc-900 border-zinc-700 shadow-2xl shadow-orange-500/10">
+        <CardHeader className="border-b border-zinc-700">
+          <div className="flex items-center justify-center gap-3">
+            <div className="p-2 bg-orange-500/10 rounded-full">
+              <BrainCircuit className="w-8 h-8 text-orange-400" />
             </div>
-          <CardDescription className="text-muted-foreground">
-            Your AI-powered guide to a bright future in India.
-          </CardDescription>
+            <div>
+              <CardTitle className="text-2xl font-bold text-white">
+                Career Clarity Chatbot (C3)
+              </CardTitle>
+              <CardDescription className="text-zinc-400">
+                Your AI-powered guide to a bright future in India.
+              </CardDescription>
+            </div>
+          </div>
         </CardHeader>
 
-        <CardContent className="overflow-hidden">
-          <ScrollArea className="h-full w-full pr-4" ref={scrollAreaRef}>
-            <div className="space-y-6">
+        <CardContent className="overflow-hidden p-0">
+          <ScrollArea className="h-full w-full" ref={scrollAreaRef}>
+            <div className="p-6 space-y-6">
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`flex gap-3 text-sm ${
-                    message.role === "user" ? "justify-end" : ""
-                  }`}
+                  className={cn("flex gap-3 text-white text-sm", {
+                    "justify-end": message.role === "user",
+                  })}
                 >
                   {message.role === "assistant" && (
-                    <Avatar className="w-8 h-8 border-2 border-orange-400">
-                      <AvatarFallback>
-                        <Bot className="text-orange-400" />
+                    <Avatar className="w-9 h-9 border-2 border-orange-500 shrink-0">
+                      <AvatarFallback className="bg-transparent">
+                        <Bot className="w-5 h-5 text-orange-500" />
                       </AvatarFallback>
                     </Avatar>
                   )}
+
                   <div
-                    className={`rounded-lg p-3 max-w-[85%] ${
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground"
-                    }`}
+                    className={cn("rounded-xl p-3 px-4 max-w-[85%] shadow", {
+                      "bg-orange-600 text-primary-foreground": message.role === "user",
+                      "bg-zinc-800 text-zinc-200": message.role === "assistant",
+                    })}
                   >
-                    <article className="prose prose-sm prose-invert text-white">
-                        <ReactMarkdown>{message.content}</ReactMarkdown>
+                    <article className="prose prose-sm prose-invert prose-p:text-white prose-headings:text-white prose-strong:text-white">
+                      <ReactMarkdown>{message.content}</ReactMarkdown>
                     </article>
                   </div>
+
                   {message.role === "user" && (
-                    <Avatar className="w-8 h-8">
-                      <AvatarFallback>
-                        <User />
+                    <Avatar className="w-9 h-9 shrink-0">
+                      <AvatarFallback className="bg-zinc-700 text-zinc-300">
+                        <User className="w-5 h-5" />
                       </AvatarFallback>
                     </Avatar>
                   )}
@@ -93,16 +97,26 @@ export function Chat() {
           </ScrollArea>
         </CardContent>
 
-        <CardFooter>
-          <form className="flex w-full gap-2" onSubmit={handleSubmit}>
+        <CardFooter className="p-4 border-t border-zinc-700">
+          <form className="flex w-full items-center gap-3" onSubmit={handleSubmit}>
             <Input
-              placeholder="Ask about careers, courses, or exams..."
+              placeholder="Ask about careers after 12th commerce..."
               value={input}
               onChange={handleInputChange}
-              className="flex-1 bg-input text-white placeholder:text-muted-foreground"
+              className="flex-1 bg-zinc-800 border-zinc-600 text-white placeholder:text-zinc-500 h-11 focus-visible:ring-1 focus-visible:ring-orange-500"
             />
-            <Button type="submit" disabled={isLoading} className="bg-orange-500 hover:bg-orange-600">
-              <SendHorizonal className="w-5 h-5" />
+            <Button
+              type="submit"
+              size="icon"
+              disabled={isLoading}
+              className="w-11 h-11 shrink-0 bg-orange-600 hover:bg-orange-500 text-white transition-all duration-300 disabled:bg-zinc-700"
+            >
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <SendHorizonal className="w-5 h-5" />
+              )}
+              <span className="sr-only">Send message</span>
             </Button>
           </form>
         </CardFooter>
