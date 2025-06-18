@@ -30,17 +30,16 @@ const itemVariants = {
 
 export default function Home() {
   return (
-    // Use <main> for semantic HTML and better accessibility
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black p-4">
       
-      {/* A container to manage layout and animations */}
+  
       <motion.div
         className="z-10 flex flex-col items-center text-center max-w-4xl"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {/* Main Heading */}
+    
         <motion.h1
           className="mb-4 text-4xl font-extrabold tracking-tight md:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-orange-300 to-orange-500"
           variants={itemVariants}
@@ -48,7 +47,7 @@ export default function Home() {
           Navigate Your Future with C3
         </motion.h1>
 
-        {/* Sub-heading */}
+    
         <motion.p
           className="mb-8 text-lg text-gray-300 md:text-xl max-w-2xl"
           variants={itemVariants}
