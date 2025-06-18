@@ -10,12 +10,12 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.3, // Each child will animate 0.3s after the previous one
+      staggerChildren: 0.3, 
     },
   },
 };
 
-// Animation variants for the text elements
+
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
