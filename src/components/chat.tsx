@@ -18,15 +18,21 @@ import ReactMarkdown from "react-markdown";
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
+const botWelcomeMessage = {
+    id: "initial-message",
+    role: "assistant" as const,
+    content: "Hello! I'm C3, your personal career clarity chatbot. To get started, please tell me what grade you've completed (e.g., 10th or 12th) and what your stream is (e.g., Science, Commerce, Arts). How can I help you today?",
+  };
 export function Chat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       api: "/api/chat",
+      initialMessages: [botWelcomeMessage],
     });
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to the bottom when new messages are added
+  
   useEffect(() => {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTo({
