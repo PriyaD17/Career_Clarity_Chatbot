@@ -2,7 +2,7 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamText, CoreMessage } from 'ai';
 import { retrieveContext } from '@/lib/rag';
 
-// ⚠️ CRITICAL: Must be 'nodejs' to talk to Docker
+
 export const runtime = 'nodejs';
 
 const google = createGoogleGenerativeAI({
@@ -17,8 +17,8 @@ export async function POST(req: Request) {
   let context = "";
   if (lastUserMessage.role === 'user') {
     console.log("🔍 Searching knowledge base for:", lastUserMessage.content);
-    // @ts-ignore
-    context = await retrieveContext(lastUserMessage.content);
+
+    context = await retrieveContext(lastUserMessage.content as string);
   }
 
   // 2. Add the data to the System Prompt

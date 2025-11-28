@@ -1,7 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  
+  serverExternalPackages: ["chromadb"],
+  
+
+  webpack: (config) => {
+    config.ignoreWarnings = [
+      { module: /node_modules\/chromadb/ }
+    ];
+    return config;
+  },
 };
 
 export default nextConfig;

@@ -1,6 +1,6 @@
 'use client'
 import { Poppins } from 'next/font/google'
-import { type AnimationProps, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { cn } from '../../lib/utils'
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] })
@@ -11,25 +11,30 @@ const animationProps = {
     whileTap: { scale: 0.95 },
     transition: {
         repeat: Infinity,
-        repeatType: 'loop',
+        repeatType: 'loop' as const,
         repeatDelay: 1,
-        type: 'spring',
+        type: 'spring' as const,     
         stiffness: 20,
         damping: 15,
         mass: 2,
         scale: {
-            type: 'spring',
+            type: 'spring' as const,
             stiffness: 200,
             damping: 5,
             mass: 0.5,
         },
     },
-} as AnimationProps
+}
 
 export function ShinyButton({ text = 'shiny-button' }) {
     return (
         <motion.button
-            {...animationProps}
+        
+            initial={animationProps.initial}
+        
+            animate={animationProps.animate}
+            whileTap={animationProps.whileTap}
+            transition={animationProps.transition}
             className={cn("relative rounded-lg px-6  py-2 font-medium backdrop-blur-xl transition-shadow duration-300 ease-in-out bg-gradient-to-r from-gray-800 to-gray-900 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]", poppins.className)}
         >
             <span

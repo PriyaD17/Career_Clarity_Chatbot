@@ -3,9 +3,11 @@
 import RadialPatternWithRadar from "@/components/ui/radar";
 import Link from "next/link";
 import { ShinyButton } from "@/components/ui/shinybutton";
-import { motion } from "framer-motion";
+// 1. Import 'Variants' type here
+import { motion, Variants } from "framer-motion"; 
 
-const containerVariants = {
+// 2. Add ': Variants' to the variable definition
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -15,8 +17,8 @@ const containerVariants = {
   },
 };
 
-
-const itemVariants = {
+// 3. Add ': Variants' here too
+const itemVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
@@ -32,7 +34,6 @@ export default function Home() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black p-4">
       
-  
       <motion.div
         className="z-10 flex flex-col items-center text-center max-w-4xl"
         variants={containerVariants}
@@ -47,7 +48,6 @@ export default function Home() {
           Navigate Your Future with C3
         </motion.h1>
 
-    
         <motion.p
           className="mb-8 text-lg text-gray-300 md:text-xl max-w-2xl"
           variants={itemVariants}
@@ -57,9 +57,7 @@ export default function Home() {
           path, courses, and exams in India.
         </motion.p>
         
-    
         <RadialPatternWithRadar />
-
         
         <motion.div variants={itemVariants}>
           <Link href="/chat">
@@ -67,9 +65,6 @@ export default function Home() {
           </Link>
         </motion.div>
       </motion.div>
-
-
-      
 
     </main>
   );
