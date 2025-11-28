@@ -1,0 +1,47 @@
+[
+    {
+      "id": "cs_eng",
+      "title": "Computer Science Engineering",
+      "description": "Focuses on programming, algorithms, software development, and AI. High demand in India and abroad.",
+      "exams": ["JEE Mains", "JEE Advanced", "BITSAT", "VITEEE", "SRMJEEE"],
+      "courses": ["B.Tech in CSE", "B.E in Computer Science", "BCA"],
+      "top_colleges": ["IIT Bombay", "IIT Delhi", "NIT Trichy", "IIIT Hyderabad", "BITS Pilani"],
+      "stream": "Science (PCM)"
+    },
+    {
+      "id": "medicine",
+      "title": "Medicine (MBBS)",
+      "description": "The path to becoming a doctor. Involves diagnosing, treating, and preventing illnesses.",
+      "exams": ["NEET UG", "AIIMS Entrance", "JIPMER"],
+      "courses": ["MBBS", "BDS (Dental)", "BAMS (Ayurveda)"],
+      "top_colleges": ["AIIMS Delhi", "CMC Vellore", "AFMC Pune", "KGMU Lucknow"],
+      "stream": "Science (PCB)"
+    },
+    {
+      "id": "law",
+      "title": "Law",
+      "description": "Study of legal systems, constitution, and justice. Great for those with good logic and communication skills.",
+      "exams": ["CLAT", "AILET", "LSAT India", "SLAT"],
+      "courses": ["BA LLB (5 years integrated)", "BBA LLB", "LLB (3 years)"],
+      "top_colleges": ["NLSIU Bangalore", "NALSAR Hyderabad", "NLU Delhi", "WBNUJS Kolkata"],
+      "stream": "Any Stream"
+    },
+    {
+      "id": "design",
+      "title": "Design (Fashion/Product/Graphic)",
+      "description": "Creative field focusing on aesthetics, functionality, and innovation.",
+      "exams": ["NID DAT", "NIFT Entrance", "UCEED"],
+      "courses": ["B.Des", "B.F.Tech"],
+      "top_colleges": ["NID Ahmedabad", "NIFT Delhi", "IIT Bombay (IDC)"],
+      "stream": "Any Stream"
+    },
+    {
+      "id": "management",
+      "title": "Business Management (BBA/BMS)",
+      "description": "Focuses on business operations, marketing, finance, and HR.",
+      "exams": ["IPMAT", "CUET", "NPAT", "SET"],
+      "courses": ["BBA", "BMS", "Integrated MBA"],
+      "top_colleges": ["IIM Indore (Integrated)", "Shaheed Sukhdev (DU)", "NMIMS Mumbai", "Symbiosis Pune"],
+      "stream": "Any Stream"
+    }
+  ]

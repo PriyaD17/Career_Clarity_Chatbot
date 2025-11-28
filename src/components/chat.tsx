@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SendHorizonal, Bot, User, BrainCircuit, Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useEffect, useRef } from "react";
@@ -92,6 +92,7 @@ export function Chat() {
 
                   {message.role === "user" && (
                     <Avatar className="w-9 h-9 shrink-0">
+                        
                       <AvatarFallback className="bg-zinc-700 text-zinc-300">
                         <User className="w-5 h-5" />
                       </AvatarFallback>
