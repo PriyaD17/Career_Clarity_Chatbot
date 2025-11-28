@@ -1,5 +1,6 @@
+"use client";
 import React, { ButtonHTMLAttributes, InputHTMLAttributes } from "react";
-import { motion, HTMLMotionProps, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -17,10 +18,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "default", ...props }, ref) => {
     const variants = {
-      default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-orange-500/20",
-      outline: "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
-      icon: "bg-primary text-primary-foreground hover:bg-primary/90 p-0",
+      default: "bg-orange-500 text-white hover:bg-orange-600 shadow-lg shadow-orange-500/20",
+      outline: "border border-zinc-700 bg-transparent hover:bg-zinc-800 hover:text-white",
+      ghost: "hover:bg-zinc-800 hover:text-white",
+      icon: "bg-orange-500 text-white hover:bg-orange-600 p-0",
     };
     
     const sizes = {
@@ -52,7 +53,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputHTMLAttributes<HTML
       <input
         type={type}
         className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-10 w-full rounded-md border border-input bg-zinc-900 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
         ref={ref}
@@ -135,16 +136,8 @@ AvatarFallback.displayName = "AvatarFallback";
 
 // ShinyButton Component
 const shinyButtonVariants: Variants = {
-  initial: { 
-    // @ts-ignore - Custom property for CSS variable
-    "--x": "100%", 
-    scale: 0.8 
-  },
-  animate: { 
-    // @ts-ignore - Custom property for CSS variable
-    "--x": "-100%", 
-    scale: 1 
-  },
+  initial: { "--x": "100%", scale: 0.8 } as any,
+  animate: { "--x": "-100%", scale: 1 } as any,
   whileTap: { scale: 0.95 },
 };
 

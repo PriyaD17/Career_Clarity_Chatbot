@@ -1,71 +1,24 @@
 "use client";
 
-import RadialPatternWithRadar from "@/components/ui/radar";
-import Link from "next/link";
-import { ShinyButton } from "@/components/ui/shinybutton";
-// 1. Import 'Variants' type here
-import { motion, Variants } from "framer-motion"; 
+import React, { useState } from "react";
+import Landing from "@/components/Landing";
+import Chat from "@/components/chat";
+import { AnimatePresence } from "framer-motion";
 
-// 2. Add ': Variants' to the variable definition
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.3, 
-    },
-  },
-};
-
-// 3. Add ': Variants' here too
-const itemVariants: Variants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeInOut",
-    },
-  },
-};
+type View = "landing" | "chat";
 
 export default function Home() {
+  const [view, setView] = useState<View>("landing");
+
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black p-4">
-      
-      <motion.div
-        className="z-10 flex flex-col items-center text-center max-w-4xl"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-    
-        <motion.h1
-          className="mb-4 text-4xl font-extrabold tracking-tight md:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-orange-300 to-orange-500"
-          variants={itemVariants}
-        >
-          Navigate Your Future with C3
-        </motion.h1>
-
-        <motion.p
-          className="mb-8 text-lg text-gray-300 md:text-xl max-w-2xl"
-          variants={itemVariants}
-        >
-          Confused about your career after 10th or 12th? The Career Clarity
-          Chatbot provides personalized guidance to help you discover the perfect
-          path, courses, and exams in India.
-        </motion.p>
-        
-        <RadialPatternWithRadar />
-        
-        <motion.div variants={itemVariants}>
-          <Link href="/chat">
-            <ShinyButton text="Get Started ✨" />
-          </Link>
-        </motion.div>
-      </motion.div>
-
+    <main className="min-h-screen bg-black">
+      <AnimatePresence mode="wait">
+        {view === "landing" ? (
+          <Landing key="landing" onStart={() => setView("chat")} />
+        ) : (
+          <Chat key="chat" onBack={() => setView("landing")} />
+        )}
+      </AnimatePresence>
     </main>
   );
 }
