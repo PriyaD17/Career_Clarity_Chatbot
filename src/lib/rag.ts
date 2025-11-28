@@ -1,49 +1,44 @@
-import { ChromaClient } from 'chromadb';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
-
-const client = new ChromaClient({ 
-    path: process.env.CHROMA_DB_URL || "http://localhost:8000" 
-  });
-const COLLECTION_NAME = "career_c3_knowledge_base";
+import { Pinecone } from '@pinecone-database/pinecone';
 
 export async function retrieveContext(query: string) {
   try {
-    // 1. Safety Check: Ensure Key exists
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-    if (!apiKey) {
-      console.error("❌ FATAL: API Key is missing in Next.js!");
-      return ""; // Return empty context so the app doesn't crash
-    }
+    const googleKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    const pineconeKey = process.env.PINECONE_API_KEY;
 
-    // 2. Generate Embedding using Google SDK
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
-    
-    const result = await model.embedContent(query);
-    const queryEmbedding = result.embedding.values;
-
-    // 3. Get Collection
-    const collection = await client.getOrCreateCollection({
-      name: COLLECTION_NAME,
-      metadata: { "hnsw:space": "cosine" },
-      embeddingFunction: { generate: async () => [] } // Dummy to silence warnings
-    });
-
-    // 4. Search Database
-    const results = await collection.query({
-      queryEmbeddings: [queryEmbedding],
-      nResults: 2, // Get top 2 matches
-    });
-
-    if (!results.documents[0] || results.documents[0].length === 0) {
+    if (!googleKey || !pineconeKey) {
+      console.error("❌ Missing Keys in environment");
       return "";
     }
 
-    // 5. Return the text found
-    return results.documents[0].join("\n\n---\n\n");
+    // 1. Generate Query Embedding
+    const genAI = new GoogleGenerativeAI(googleKey);
+    const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
+    const result = await model.embedContent(query);
+    const queryVector = result.embedding.values;
+
+    // 2. Query Pinecone
+    const pinecone = new Pinecone({ apiKey: pineconeKey });
+    const index = pinecone.index("career-c3");
+
+    const searchResponse = await index.namespace("ns1").query({
+      vector: queryVector,
+      topK: 2,
+      includeMetadata: true, // Crucial: Ask Pinecone to give back the text
+    });
+
+    // 3. Extract Text
+    if (searchResponse.matches.length === 0) {
+      return "";
+    }
+
+    return searchResponse.matches
+      .map((match) => match.metadata?.text)
+      .filter((text) => text !== undefined)
+      .join("\n\n---\n\n");
+
   } catch (error) {
-    console.error("Error querying RAG:", error);
+    console.error("Error querying Pinecone:", error);
     return "";
   }
 }
