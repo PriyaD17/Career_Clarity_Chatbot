@@ -1,8 +1,10 @@
 import { ChromaClient } from 'chromadb';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Initialize Chroma (Port 8000)
-const client = new ChromaClient({ path: "http://localhost:8000" });
+
+const client = new ChromaClient({ 
+    path: process.env.CHROMA_DB_URL || "http://localhost:8000" 
+  });
 const COLLECTION_NAME = "career_c3_knowledge_base";
 
 export async function retrieveContext(query: string) {
