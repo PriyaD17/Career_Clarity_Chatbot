@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import { 
   SendHorizonal, 
@@ -9,27 +11,29 @@ import {
   Download, 
   Sparkles 
 } from "lucide-react";
-import ReactMarkdown, { Components } from "react-markdown";
+import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Import from standard Shadcn paths
 import { 
   Card, 
   CardContent, 
   CardDescription, 
   CardFooter, 
   CardHeader, 
-  CardTitle, 
-  Input, 
-  Button, 
-  Avatar, 
-  AvatarFallback 
-} from "./ui/integrated-ui";
-import { cn } from "./../lib/utils";
-import { Message } from "../types";
-import { sendMessageStream, startChat } from "../services/gemini";
-import { INITIAL_MESSAGE } from "../constants";
+  CardTitle 
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
+
+import { sendMessageStream, startChat } from "@/services/gemini";
+import { INITIAL_MESSAGE } from "@/constants";
+import { Message } from "@/types";
 
 interface ChatProps {
-  onBack: () => void;
+  onBack?: () => void; // Made optional for the route page
 }
 
 const SUGGESTIONS = [
@@ -50,14 +54,11 @@ const Chat: React.FC<ChatProps> = ({ onBack }) => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize chat session on mount
   useEffect(() => {
     startChat();
-    // Focus input on mount
     inputRef.current?.focus();
   }, []);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollAreaRef.current) {
         const scrollContainer = scrollAreaRef.current;
@@ -130,18 +131,6 @@ const Chat: React.FC<ChatProps> = ({ onBack }) => {
     URL.revokeObjectURL(url);
   };
 
-  // Custom Markdown Components for consistent styling
-  const MarkdownComponents: Components = {
-    p: ({ children }) => <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>,
-    strong: ({ children }) => <span className="font-bold text-orange-300">{children}</span>,
-    ul: ({ children }) => <ul className="list-disc pl-4 mb-3 space-y-1">{children}</ul>,
-    ol: ({ children }) => <ol className="list-decimal pl-4 mb-3 space-y-1">{children}</ol>,
-    li: ({ children }) => <li className="pl-1">{children}</li>,
-    h1: ({ children }) => <h1 className="text-lg font-bold text-orange-400 mb-2 mt-4">{children}</h1>,
-    h2: ({ children }) => <h2 className="text-base font-bold text-orange-400 mb-2 mt-4">{children}</h2>,
-    h3: ({ children }) => <h3 className="text-sm font-bold text-orange-400 mb-1 mt-3">{children}</h3>,
-  };
-
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -149,7 +138,6 @@ const Chat: React.FC<ChatProps> = ({ onBack }) => {
       exit={{ opacity: 0, y: -20 }}
       className="flex min-h-screen items-center justify-center bg-black p-4 relative"
     >
-      {/* Background decoration */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
          <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] rounded-full bg-orange-600/5 blur-[100px]" />
          <div className="absolute bottom-[10%] left-[5%] w-[40%] h-[40%] rounded-full bg-indigo-600/5 blur-[100px]" />
@@ -159,15 +147,16 @@ const Chat: React.FC<ChatProps> = ({ onBack }) => {
         <CardHeader className="border-b border-zinc-700/50 py-4 shrink-0 bg-zinc-900/95 backdrop-blur-xl z-20">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={onBack}
-                className="text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-full transition-colors"
-                title="Back to Home"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
+              {onBack && (
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={onBack}
+                  className="text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-full transition-colors"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </Button>
+              )}
               <div className="relative">
                 <div className="p-2 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg shadow-orange-500/20">
                   <BrainCircuit className="w-6 h-6 text-white" />
@@ -224,24 +213,19 @@ const Chat: React.FC<ChatProps> = ({ onBack }) => {
                   >
                     {message.role === "model" ? (
                       <article className="prose prose-sm prose-invert max-w-none">
-                         <ReactMarkdown components={MarkdownComponents}>{message.content}</ReactMarkdown>
+                         <ReactMarkdown 
+                           components={{
+                             p: ({ children }) => <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>,
+                             strong: ({ children }) => <span className="font-bold text-orange-300">{children}</span>,
+                             ul: ({ children }) => <ul className="list-disc pl-4 mb-3 space-y-1">{children}</ul>,
+                             ol: ({ children }) => <ol className="list-decimal pl-4 mb-3 space-y-1">{children}</ol>,
+                           }}
+                         >{message.content}</ReactMarkdown>
                          {message.content === "" && (
                              <div className="flex gap-1 h-5 items-center px-1">
-                                 <motion.div 
-                                   className="w-1.5 h-1.5 bg-orange-500 rounded-full"
-                                   animate={{ y: [0, -5, 0] }}
-                                   transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
-                                 />
-                                 <motion.div 
-                                   className="w-1.5 h-1.5 bg-orange-500 rounded-full"
-                                   animate={{ y: [0, -5, 0] }}
-                                   transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
-                                 />
-                                 <motion.div 
-                                   className="w-1.5 h-1.5 bg-orange-500 rounded-full"
-                                   animate={{ y: [0, -5, 0] }}
-                                   transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
-                                 />
+                                 <motion.div className="w-1.5 h-1.5 bg-orange-500 rounded-full" animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0 }} />
+                                 <motion.div className="w-1.5 h-1.5 bg-orange-500 rounded-full" animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }} />
+                                 <motion.div className="w-1.5 h-1.5 bg-orange-500 rounded-full" animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }} />
                              </div>
                          )}
                       </article>
@@ -249,7 +233,6 @@ const Chat: React.FC<ChatProps> = ({ onBack }) => {
                         <div className="whitespace-pre-wrap font-medium">{message.content}</div>
                     )}
                   </div>
-
                   {message.role === "user" && (
                     <Avatar className="w-8 h-8 md:w-9 md:h-9 shrink-0 mt-1 border border-zinc-700 shadow-sm">
                       <AvatarFallback className="bg-zinc-800 text-zinc-300">
@@ -279,8 +262,6 @@ const Chat: React.FC<ChatProps> = ({ onBack }) => {
                 ))}
               </motion.div>
             )}
-
-            {/* Spacer for scrolling */}
             <div className="h-4" /> 
           </div>
         </CardContent>

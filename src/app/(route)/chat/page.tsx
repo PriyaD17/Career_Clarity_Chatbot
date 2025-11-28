@@ -1,7 +1,4 @@
-
-import { Chat } from "@/components/chat"
-
-
+import Chat from "@/components/chat"; 
 
 const ChatPage = () => {
     return <Chat />
