@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import * as dotenv from 'dotenv';
 
-const chromaUrl = process.env.CHROMA_DB_URL || "http://localhost:8000";
+const chromaUrl = process.env.CHROMA_DB_URL;
 console.log(`Connecting to ChromaDB at: ${chromaUrl}`);
 const client = new ChromaClient({ path: chromaUrl });
 
