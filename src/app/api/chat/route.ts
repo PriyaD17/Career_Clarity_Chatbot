@@ -1,7 +1,5 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { streamText, CoreMessage } from 'ai';
-import { retrieveContext } from '@/lib/rag';
-
+import { streamText } from 'ai';
 
 export const runtime = 'nodejs';
 
@@ -10,33 +8,14 @@ const google = createGoogleGenerativeAI({
 });
 
 export async function POST(req: Request) {
-  const { messages }: { messages: CoreMessage[] } = await req.json();
-  const lastUserMessage = messages[messages.length - 1];
-  
-  // 1. Retrieve data from our database
-  let context = "";
-  if (lastUserMessage.role === 'user') {
-    console.log("🔍 Searching knowledge base for:", lastUserMessage.content);
+  const { messages } = await req.json();
 
-    context = await retrieveContext(lastUserMessage.content as string);
-  }
-
-  // 2. Add the data to the System Prompt
-  const systemPrompt = `You are C3, an expert AI career counselor for Indian students.
-  
-  **KNOWLEDGE BASE (Facts you must use):**
-  ${context ? `Use this specific information to answer:\n${context}` : "No specific database information found. Use general knowledge."}
-  
-  **INSTRUCTIONS:**
-  - If the knowledge base lists specific Exams or Colleges, you MUST mention them.
-  - Keep the tone encouraging and helpful.
-  - Format with Markdown (Bold key terms).
-  `;
-
-  // 3. Generate Answer
   const result = await streamText({
-    model: google('models/gemini-1.5-flash'),
-    system: systemPrompt,
+    model: google('gemini-1.5-flash'),
+    system: `You are C3, an expert AI career counselor for Indian students. 
+    Your goal is to help students who finished 10th or 12th find career paths.
+    Focus on Indian exams (JEE, NEET, CUET, CLAT), colleges, and streams.
+    Be encouraging and format your answers with Markdown (bolding and lists).`,
     messages,
   });
 
