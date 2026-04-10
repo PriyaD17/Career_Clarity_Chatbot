@@ -19,7 +19,7 @@ const initializeAI = () => {
 export const startChat = () => {
   const client = initializeAI();
   chatSession = client.chats.create({
-    model: 'gemini-2.0-flash', // Updated to latest stable flash model
+    model: 'gemini-3-flash-preview', // Updated to latest stable flash model
     config: {
       systemInstruction: SYSTEM_PROMPT,
     },
